@@ -27,7 +27,7 @@ const CardWrapper: React.FC<CardWrapperProps> = (props) => {
     cardFooterChildren,
   } = props;
   return (
-    <Card className={`${classes ? classes : ""} w-[550px] rounded-lg p-0`}>
+    <Card className={`${classes ? classes : ""} w-[550px] rounded-lg p-0 sm:w-full`}>
       {isHeader && (
         <CardHeader className={` flex items-center`}>
           {title && (
