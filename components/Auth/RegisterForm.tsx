@@ -1,8 +1,11 @@
 "use client";
+import * as z from "zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { RegisterSchema } from "./AuthSchemas";
+import { Button } from "@/components/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { CardWrapper } from "@/components/CardWrapper";
 import {
   Form,
@@ -14,7 +17,18 @@ import {
 } from "@/components/ui/form";
 
 const RegisterForm = () => {
-  const form = useForm();
+  const form = useForm<z.infer<typeof RegisterSchema>>({
+    resolver: zodResolver(RegisterSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+  const handleRegistration = (values: z.infer<typeof RegisterSchema>) => {
+    console.log(values, "val");
+  };
   return (
     <CardWrapper
       isHeader={true}
@@ -22,7 +36,7 @@ const RegisterForm = () => {
       description="Create an account for registration"
     >
       <Form {...form}>
-        <form>
+        <form onSubmit={form.handleSubmit(handleRegistration)}>
           <div className="space-y-3">
             <FormField
               name="name"
@@ -31,7 +45,7 @@ const RegisterForm = () => {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Enter your username" />
+                    <Input {...field} placeholder="Enter your name" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -72,11 +86,11 @@ const RegisterForm = () => {
               )}
             />
             <FormField
-              name="rePassword"
+              name="confirmPassword"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Re-Enter Password</FormLabel>
+                  <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -97,10 +111,13 @@ const RegisterForm = () => {
           </div>
         </form>
       </Form>
-      <Button asChild variant={"link"} className="p-0 text-[13px] font-normal">
+      <Button
+        asChild
+        variant={"link"}
+        className="p-0 text-[13px] font-normal text-center block mt-4"
+      >
         <Link href={"/auth/login"}>Already have an Account?</Link>
       </Button>
-      
     </CardWrapper>
   );
 };

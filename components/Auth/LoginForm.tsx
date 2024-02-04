@@ -73,16 +73,16 @@ const LoginForm = () => {
         </form>
       </Form>
       <div className="flex items-center mt-4 gap-4">
-        <div className="border-2 border-input rounded-md bg-transparent w-3/6 flex h-16 items-center justify-center gap-2 cursor-pointer ">
+        <div className="border-2 border-input rounded-md bg-transparent w-3/6 flex h-16 items-center justify-center gap-2 cursor-pointer sm:flex-col ">
           <FcGoogle size={25} />
-          <p className="text-sm font-medium">Login With Google</p>
+          <p className="text-sm font-medium sm:hidden">Login With Google</p>
         </div>
-        <div className="border-2 border-input rounded-md bg-transparent w-3/6 flex h-16 items-center justify-center gap-2 cursor-pointer ">
+        <div className="border-2 border-input rounded-md bg-transparent w-3/6 flex h-16 items-center justify-center gap-2 cursor-pointer sm:flex-col ">
           <FaGithub size={25} />
-          <p className="text-sm font-medium">Login With Github</p>
+          <p className="text-sm font-medium sm:hidden">Login With Github</p>
         </div>
       </div>
-      <Button asChild variant={"link"} className="p-0 text-[13px] font-normal">
+      <Button asChild variant={"link"} className="p-0 text-[13px] font-normal text-center block mt-4">
         <Link href={"/auth/register"}>Do you want to signup?</Link>
       </Button>
     </CardWrapper>
