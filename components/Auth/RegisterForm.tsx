@@ -1,6 +1,7 @@
 "use client";
 import * as z from "zod";
 import Link from "next/link";
+import { registerUser } from "@/actions";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { RegisterSchema } from "./AuthSchemas";
@@ -28,6 +29,7 @@ const RegisterForm = () => {
   });
   const handleRegistration = (values: z.infer<typeof RegisterSchema>) => {
     console.log(values, "val");
+    registerUser(values);
   };
   return (
     <CardWrapper
