@@ -7,14 +7,14 @@ import { RegisterSchema } from "@/components/Auth/AuthSchemas";
 export const registerUser = async (values: z.infer<typeof RegisterSchema>) => {
   const validatedFields = RegisterSchema.safeParse(values);
   if (!validatedFields.success) {
-    return { error: "Invalid Fields" };
+    return { message: "Invalid Fields", status: "Failed" };
   }
   const { email, password, name } = validatedFields.data;
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const isEmailExist = await db.user.findUnique({ where: { email } });
   if (isEmailExist) {
-    return { error: "Email already exists" };
+    return { message: "Email already exists", status: "Failed" };
   }
 
   const newUser = await db.user.create({
@@ -25,5 +25,5 @@ export const registerUser = async (values: z.infer<typeof RegisterSchema>) => {
     },
   });
 
-  return { success: "user created successfully", user: newUser };
+  return { success: "user created successfully", status: "Success" };
 };
