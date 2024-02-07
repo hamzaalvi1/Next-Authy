@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { RegisterSchema } from "./AuthSchemas";
 import { Button } from "@/components/ui/button";
-import { ToastAction } from "@radix-ui/react-toast";
 import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CardWrapper } from "@/components/CardWrapper";
@@ -21,6 +20,7 @@ import {
 
 const RegisterForm = () => {
   const { toast } = useToast();
+
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
@@ -30,6 +30,9 @@ const RegisterForm = () => {
       confirmPassword: "",
     },
   });
+  const handleOnPaste = (evt: React.ClipboardEvent<HTMLInputElement>) => {
+    evt.preventDefault();
+  };
   const handleRegistration = async (values: z.infer<typeof RegisterSchema>) => {
     const user = await registerUser(values);
     if (!user?.success) {
@@ -37,7 +40,6 @@ const RegisterForm = () => {
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
         description: user?.message,
-        action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
     }
   };
@@ -108,6 +110,7 @@ const RegisterForm = () => {
                       {...field}
                       placeholder="************"
                       type="password"
+                      onPaste={handleOnPaste}
                     />
                   </FormControl>
                   <FormMessage />
@@ -117,8 +120,9 @@ const RegisterForm = () => {
             <Button
               className="w-full text-sm font-normal h-[45px] rounded-md mt-4"
               type="submit"
+              disabled={form.formState.isSubmitting}
             >
-              Register
+              {form.formState.isSubmitting ? "Loading...." : "Register"}
             </Button>
           </div>
         </form>
